@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <malloc.h>
+int split ( int*, int, int );
+void quicksort ( int *, int, int );
+int main()
+{
+	int t,n,i;
+	scanf("%d",&t);
+	while(t--)
+	{
+		scanf("%d",&n);
+		int *p = (int *)malloc(n*sizeof(int));
+		fflush(stdout);
+		fflush(stdin);
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&p[i]);
+		}
+		//printf("%s\n", "Read all inputs");
+		//TODO: routine for quicksort
+		quicksort ( p, 0, n-1 ) ;
+		//printf("%s\n", "QS xecuted");
+		// for(i=0;i<n;i++)
+		// 	printf("%d ",p[i]);
+		int ans = p[1]-p[0];
+		int j;
+		for(i=2,j=1;i<n;i++,j++)
+		{
+			int diff = p[i]-p[j];
+			if(diff<ans)
+				ans=diff;
+		}
+		printf("%d\n",ans );
+		free(p);
+
+	}
+	return 0;
+}
+
+
+int split ( int*, int, int ) ;
+void quicksort ( int a[ ], int lower, int upper )
+{
+	int i ;
+	if ( upper > lower )
+	{
+		i = split ( a, lower, upper ) ;
+		quicksort ( a, lower, i - 1 ) ;
+		quicksort ( a, i + 1, upper ) ;
+	}
+}
+
+int split ( int a[ ], int lower, int upper )
+{
+	int i, p, q, t ;
+
+	p = lower + 1 ;
+	q = upper ;
+	i = a[lower] ;
+
+	while ( q >= p )
+	{
+		while ( a[p] <= i )
+			p++ ;
+
+		while ( a[q] > i )
+			q-- ;
+
+		if ( q > p )
+		{
+			t = a[p] ;
+			a[p] = a[q] ;
+			a[q] = t ;
+		}
+	}
+
+	t = a[lower] ;
+	a[lower] = a[q] ;
+	a[q] = t ;
+
+	return q ;
+}
